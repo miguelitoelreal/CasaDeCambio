@@ -28,4 +28,39 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+
+    [HttpPost]
+    public IActionResult CalcularCambio(decimal cantidad, string origen, string destino)
+    {
+        // Definir las tasas de cambio
+        var tasasCambio = new Dictionary<(string, string), decimal>
+        {
+            { ("BRL", "PEN"), 0.75m }, // 1 BRL = 0.75 PEN
+            { ("USD", "PEN"), 3.80m }, // 1 USD = 3.80 PEN
+            { ("BRL", "USD"), 0.20m }, // 1 BRL = 0.20 USD
+            { ("USD", "BRL"), 5.00m }, // 1 USD = 5.00 BRL
+            { ("PEN", "USD"), 0.26m }, // 1 PEN = 0.26 USD
+            { ("PEN", "BRL"), 1.33m }  // 1 PEN = 1.33 BRL
+        };
+
+        // Verificar si la combinación de monedas es válida
+        if (!tasasCambio.TryGetValue((origen, destino), out var tasaCambio))
+        {
+            ViewBag.Error = "No se puede realizar el cambio entre las monedas seleccionadas.";
+            return View("Index");
+        }
+
+        // Calcular el resultado
+        decimal resultado = cantidad * tasaCambio;
+
+        // Pasar los datos calculados a la vista
+        ViewBag.Cantidad = cantidad;
+        ViewBag.Origen = origen;
+        ViewBag.Destino = destino;
+        ViewBag.Resultado = resultado;
+
+        return View("Resultado");
+    }
+
+   
 }
