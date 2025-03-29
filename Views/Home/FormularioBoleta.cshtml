@@ -1,0 +1,24 @@
+@{
+    ViewData["Title"] = "Formulario de Boleta";
+}
+
+<h1>Formulario de Boleta</h1>
+
+<form asp-action="GenerarBoleta" method="post">
+    <input type="hidden" name="cantidad" value="@ViewBag.Cantidad" />
+    <input type="hidden" name="resultado" value="@ViewBag.Resultado" />
+    <input type="hidden" name="origen" value="@ViewBag.Origen" />
+    <input type="hidden" name="destino" value="@ViewBag.Destino" /> 
+
+    <div class="form-group">
+        <label for="nombre">Nombre Completo:</label>
+        <input type="text" id="nombre" name="nombre" class="form-control" required />
+    </div>
+ 
+    <div class="form-group">
+        <label for="email">Correo Electrónico:</label>
+        <input type="email" id="email" name="email" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Generar Boleta</button>
+</form> 
